@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscaminas</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    
+    <div class="container" id="game-container">
+        <header>
+            <h1>Buscaminas</h1>
+            <p class="subtitle">Encuentra todas las casillas seguras</p>
+        </header>
+        
+        <div class="mines-config">
+            <label for="mines-slider">Número de Minas:</label>
+            <input type="range" id="mines-slider" class="mines-slider" min="5" max="30" value="10">
+            <span id="mines-value">10</span>
+        </div>
+        
+        <div class="game-controls">
+            <div class="game-info">
+                <div class="info-box">
+                    <div class="info-label">MINAS</div>
+                    <div class="info-value mines-left" id="mines-count">10</div>
+                </div>
+                <div class="info-box">
+                    <div class="info-label">TIEMPO</div>
+                    <div class="info-value timer" id="timer">0</div>
+                </div>
+            </div>
+            <div class="game-buttons">
+                <button class="btn" id="restart-game">Reiniciar Juego</button>
+            </div>
+        </div>
+        
+        <div class="game-board" id="game-board"></div>
+        
+        <footer>
+            <p>Encuentra todas las casillas seguras sin activar las minas</p>
+        </footer>
+    </div>
+    
+    <div class="hood" id="hood">
+        <div class="hood-content">
+            <h2>Buscaminas - Reglas del Juego</h2>
+            <p>El tablero está compuesto por casillas ocultas. Algunas contienen minas y otras están vacías.</p>
+            
+            <ul>
+                <li><strong>Haz clic en una casilla</strong> para revelar su contenido.</li>
+                <li><strong>Si hay una mina</strong>, perderás el juego.</li>
+                <li><strong>Si está vacía</strong>, podrás seguir jugando.</li>
+                <li><strong>Los números</strong> indican cuántas minas hay en las casillas adyacentes.</li>
+                <li><strong>Haz clic derecho o mantén presionado</strong> para colocar una bandera en casillas que creas que contienen minas.</li>
+                <li><strong>Encuentra todas las casillas seguras</strong> sin activar ninguna mina para ganar.</li>
+            </ul>
+            
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="btn btn-start" id="start-game">¡Comenzar Juego!</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="game-over" id="game-over">
+        <div class="message">
+            <h2>¡Juego Terminado!</h2>
+            <p>Has activado una mina. Inténtalo de nuevo.</p>
+            <button class="btn btn-start" id="try-again">Reiniciar Juego</button>
+        </div>
+    </div>
+    
+    <div class="game-win" id="game-win">
+        <div class="message">
+            <h2>¡Felicidades!</h2>
+            <p>Has encontrado todas las casillas seguras sin activar ninguna mina.</p>
+            <button class="btn btn-start" id="play-again">Jugar Otra Vez</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
