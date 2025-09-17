@@ -301,3 +301,231 @@ h1 {
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
 
+.mines-slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--metal-light);
+    cursor: pointer;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    border: none;
+}
+
+.game-board {
+    display: grid;
+    gap: 5px;
+    margin: 0 auto;
+    max-width: 500px;
+    position: relative;
+    z-index: 1;
+}
+
+.cell {
+    aspect-ratio: 1/1;
+    background: linear-gradient(145deg, #1a2435, #111825);
+    border: 2px solid #2a3b4d;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+
+.cell::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(192, 192, 192, 0.1), transparent);
+    transform: rotate(45deg);
+    transition: all 0.3s;
+    opacity: 0;
+}
+
+.cell:hover::before {
+    opacity: 1;
+    animation: shine 1.5s infinite;
+}
+
+@keyframes shine {
+    0% { transform: rotate(45deg) translateY(-100%); }
+    100% { transform: rotate(45deg) translateY(100%); }
+}
+
+.cell:hover {
+    background: linear-gradient(145deg, #223145, #192235);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.cell.revealed {
+    background: linear-gradient(145deg, #0d1319, #070a0e);
+    border: 2px solid #1c2b3a;
+    transform: scale(0.95);
+}
+
+.cell.revealed::before {
+    display: none;
+}
+
+.cell.flag::before {
+    content: "⚜️";
+    font-size: 1.2rem;
+    position: absolute;
+    animation: flagWave 1s infinite alternate;
+}
+
+@keyframes flagWave {
+    0% { transform: rotate(-5deg); }
+    100% { transform: rotate(5deg); }
+}
+
+.cell.mine::after {
+    content: "💣";
+    font-size: 1.2rem;
+    animation: minePulse 0.5s infinite alternate;
+}
+
+@keyframes minePulse {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.2); }
+}
+
+.cell.mine.revealed {
+    background: linear-gradient(145deg, #450a0a, #200505);
+    animation: mineRevealed 0.5s;
+}
+
+@keyframes mineRevealed {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.cell.adjacent-1 { color: #3498db; }
+.cell.adjacent-2 { color: #2ecc71; }
+.cell.adjacent-3 { color: #e74c3c; }
+.cell.adjacent-4 { color: #9b59b6; }
+.cell.adjacent-5 { color: #f39c12; }
+.cell.adjacent-6 { color: #1abc9c; }
+.cell.adjacent-7 { color: #d35400; }
+.cell.adjacent-8 { color: #c0392b; }
+
+.game-over, .game-win {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    display: none;
+    backdrop-filter: blur(5px);
+}
+
+.message {
+    background: linear-gradient(135deg, #0a0a1a, #141444);
+    border: 3px solid var(--metal-light);
+    border-radius: 15px;
+    padding: 30px;
+    text-align: center;
+    max-width: 90%;
+    box-shadow: 0 0 40px rgba(79, 201, 240, 0.5);
+    animation: messageAppear 0.5s forwards;
+}
+
+@keyframes messageAppear {
+    0% { transform: scale(0.8); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.message h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    color: var(--metal-light);
+    text-shadow: 0 0 10px rgba(192, 192, 192, 0.7);
+}
+
+.message p {
+    font-size: 1.2rem;
+    margin-bottom: 25px;
+}
+
+footer {
+    margin-top: 20px;
+    text-align: center;
+    color: var(--metal-dark);
+    font-size: 0.9rem;
+    position: relative;
+    z-index: 1;
+}
+
+@media (max-width: 600px) {
+    h1 {
+        font-size: 2.2rem;
+    }
+    
+    .hood-content {
+        padding: 20px;
+    }
+    
+    .hood h2 {
+        font-size: 1.8rem;
+    }
+    
+    .game-board {
+        gap: 3px;
+    }
+    
+    .cell {
+        font-size: 0.8rem;
+    }
+    
+    .game-controls {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .game-info {
+        width: 100%;
+        justify-content: space-around;
+    }
+    
+    .btn {
+        padding: 10px 20px;
+        font-size: 1rem;
+    }
+    
+    .mines-config {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 400px) {
+    h1 {
+        font-size: 1.8rem;
+    }
+    
+    .game-board {
+        gap: 2px;
+    }
+    
+    .cell {
+        font-size: 0.7rem;
+    }
+    
+    .info-value {
+        font-size: 1.2rem;
+    }
+}
