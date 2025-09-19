@@ -190,3 +190,104 @@ function getNeighbors(index) {
     
     return neighbors;
 }
+
+// Función para revelar celda
+function revealCell(index) {
+    if (!gameStarted || gameOver) return;
+    
+    const cell = document.querySelector(`.cell[data-index="${index}"]`);
+    if (cell.classList.contains('revealed') || cell.classList.contains('flag')) return;
+    
+    cell.classList.add('revealed');
+    
+    if (board[index] === 'X') {
+        cell.classList.add('mine');
+        revealAllMines();
+        endGame(false);
+        return;
+    }
+    
+    cellsRevealed++;
+    
+    if (board[index] !== 0) {
+        cell.textContent = board[index];
+        cell.classList.add(`adjacent-${board[index]}`);
+    } else {
+        // Revelar celdas adyacentes si es cero
+        const neighbors = getNeighbors(index);
+        for (const neighbor of neighbors) {
+            const neighborCell = document.querySelector(`.cell[data-index="${neighbor}"]`);
+            if (!neighborCell.classList.contains('revealed') && !neighborCell.classList.contains('flag')) {
+                setTimeout(() => revealCell(neighbor), 50);
+            }
+        }
+    }
+    
+    // Verificar victoria
+    if (cellsRevealed === boardSize * boardSize - mineCount) {
+        endGame(true);
+    }
+}
+
+// Función para revelar todas las minas
+function revealAllMines() {
+    for (let i = 0; i < boardSize * boardSize; i++) {
+        if (board[i] === 'X') {
+            const cell = document.querySelector(`.cell[data-index="${i}"]`);
+            if (!cell.classList.contains('flag')) {
+                cell.classList.add('revealed', 'mine');
+            }
+        }
+    }
+}
+
+// Función para colocar bandera
+function placeFlag(index) {
+    if (!gameStarted || gameOver) return;
+    
+    const cell = document.querySelector(`.cell[data-index="${index}"]`);
+    if (cell.classList.contains('revealed')) return;
+    
+    if (cell.classList.contains('flag')) {
+        cell.classList.remove('flag');
+        flagsPlaced--;
+    } else {
+        cell.classList.add('flag');
+        flagsPlaced++;
+    }
+    
+    updateMinesCounter();
+}
+
+// Función para actualizar contador de minas
+function updateMinesCounter() {
+    document.getElementById('mines-count').textContent = mineCount - flagsPlaced;
+}
+
+// Función para iniciar temporizador
+function startTimer() {
+    clearInterval(timerInterval);
+    timer = 0;
+    document.getElementById('timer').textContent = timer;
+    
+    timerInterval = setInterval(() => {
+        timer++;
+        document.getElementById('timer').textContent = timer;
+    }, 1000);
+}
+
+// Función para terminar el juego
+function endGame(isWin) {
+    gameOver = true;
+    clearInterval(timerInterval);
+    
+    if (isWin) {
+        setTimeout(() => {
+            document.getElementById('game-win').style.display = 'flex';
+        }, 500);
+    } else {
+        setTimeout(() => {
+            document.getElementById('game-over').style.display = 'flex';
+        }, 500);
+    }
+}
